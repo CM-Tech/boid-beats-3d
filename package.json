@@ -1,0 +1,18 @@
+{
+  "name": "3d-flock",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Cole Kissane",
+  "license": "MIT",
+  "scripts": {
+    "start": "parcel serve src/index.html",
+    "build": "parcel build src/index.html"
+  },
+  "dependencies": {
+    "dat.gui": "^0.7.7",
+    "gpucomputationrender-three": "^2.0.0",
+    "parcel-bundler": "^1.12.4",
+    "stats-js": "^1.0.1",
+    "three": "^0.120.1"
+  }
+}
