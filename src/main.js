@@ -228,7 +228,7 @@ window.onload = function () {
 
 	// gui.add(controls, 'directions', 2, 12);
 	// gui.add(controls, 'turning');
-	gui.add(controls, 'activateMic').name("Activate Microphone");
+	gui.add(controls, 'activateMic').name("useMicrophone");
 	// gui.add(controls, 'calibrate');
 
 };
