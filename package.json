@@ -5,13 +5,18 @@
   "author": "Cole Kissane",
   "license": "MIT",
   "scripts": {
-    "start": "parcel serve ./src/index.html",
-    "build": "parcel build ./src/index.html --public-url ./"
+    "dev": "vite",
+    "build": "vite build",
+    "serve": "vite preview"
+  },
+  "devDependencies": {
+    "@types/dat.gui": "^0.7.6",
+    "typescript": "^4.2.3",
+    "vite": "^2.1.5"
   },
   "dependencies": {
     "dat.gui": "^0.7.7",
     "gpucomputationrender-three": "^2.0.0",
-    "parcel-bundler": "^1.12.4",
     "stats-js": "^1.0.1",
     "three": "^0.120.1"
   }
