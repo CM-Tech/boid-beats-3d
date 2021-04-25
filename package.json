@@ -5,8 +5,8 @@
   "author": "Cole Kissane",
   "license": "MIT",
   "scripts": {
-    "start": "parcel serve src/index.html",
-    "build": "parcel build src/index.html"
+    "start": "parcel serve ./src/index.html",
+    "build": "parcel build ./src/index.html --public-url ./"
   },
   "dependencies": {
     "dat.gui": "^0.7.7",
