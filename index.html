@@ -1,4 +1,64 @@
-<!DOCTYPE html><html lang="en"><head><title>Boid Beats 3D</title><meta charset="utf-8"><meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"><link type="text/css" rel="stylesheet" href="main.1fc9b45b.css"><style>body{background:#000;overflow:hidden}body,html{margin:0;padding:0}circle{stroke:#fff;stroke-opacity:.25;stroke-width:2px}#audio{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);opacity:0;transition:opacity 1s}#audio.paused,#audio:hover{opacity:.8}#overlay{color:#fff;position:absolute;top:0;left:0}a{color:#fff;font-family:Arial}</style></head><body> <audio id="audio" crossorigin="anonymous" class="paused" src="https://cdn.glitch.com/7c659aa6-fe5f-4610-bdf3-3fd76117d9a5%2F300%20Violin%20Orchestra.mp3?1551626906037" loop controls></audio>  <script id="fragmentShaderPosition" type="x-shader/x-fragment">
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Boid Beats 3D</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		
+		<style type="text/css">
+			body {
+				background: rgb(0, 0, 0);
+			  overflow:hidden;
+			}
+	
+			body,
+			html {
+				margin: 0px;
+				padding: 0px;
+			}
+	
+			circle {
+				stroke: white;
+				stroke-opacity: 0.25;
+				stroke-width: 2px;
+			}
+		  #audio {
+			position: absolute;
+			left: 50%;
+			top: 50%;
+			transform: translate(-50%, -50%);
+			opacity: 0.0;
+			transition: opacity 1s;
+		  }
+		  #audio:hover {
+			opacity: 0.8;
+		  }
+		  #audio.paused {
+			opacity: 0.8;
+		  }
+		  #overlay {
+			color: white;
+			position: absolute;
+			top: 0;
+			left: 0;
+		  }
+		  a {
+			color: white;
+			font-family: Arial;
+		  }
+	/*       canvas{
+				filter: sepia(0.8) hue-rotate(180deg) saturate(2);
+		  } */
+		</style>
+	<script type="module" crossorigin src="./assets/index.bb58adaa.js"></script>
+  <link rel="modulepreload" href="./assets/vendor.42a720c4.js">
+  <link rel="stylesheet" href="./assets/index.efa436e7.css">
+</head>
+	<body>
+		<audio id="audio" crossorigin="anonymous" class="paused" src="https://cdn.glitch.com/7c659aa6-fe5f-4610-bdf3-3fd76117d9a5%2F300%20Violin%20Orchestra.mp3?1551626906037" loop controls></audio>
+  
+		<!-- shader for bird's position -->
+		<script id="fragmentShaderPosition" type="x-shader/x-fragment">
 
 			uniform float time;
 			uniform float delta;
@@ -20,7 +80,10 @@
 
 			}
 
-		</script>  <script id="fragmentShaderVelocity" type="x-shader/x-fragment">
+		</script>
+
+		<!-- shader for bird's velocity -->
+		<script id="fragmentShaderVelocity" type="x-shader/x-fragment">
 
 			uniform float time;
 			uniform float testing;
@@ -241,7 +304,10 @@ float tm=2.0;
 
 			}
 
-		</script>  <script id="fragmentShaderColor" type="x-shader/x-fragment">
+		</script>
+
+		<!-- shader for bird's velocity -->
+		<script id="fragmentShaderColor" type="x-shader/x-fragment">
 
 			uniform float time;
 			uniform float testing;
@@ -422,7 +488,9 @@ float tm=2.0;
 
 			}
 
-		</script> <script type="x-shader/x-vertex" id="birdVS">
+		</script>
+
+		<script type="x-shader/x-vertex" id="birdVS">
 
 			attribute vec2 reference;
 			attribute float birdVertex;
@@ -491,7 +559,10 @@ float tm=2.0;
 				gl_Position = projectionMatrix *  viewMatrix  * vec4( newPosition, 1.0 );
 			}
 
-		</script>  <script type="x-shader/x-fragment" id="birdFS">
+		</script>
+
+		<!-- bird geometry shader -->
+		<script type="x-shader/x-fragment" id="birdFS">
 
 			varying vec4 vColor;
 			varying vec3 selfVelocity;
@@ -535,6 +606,8 @@ float tm=2.0;
 
 			}
 
-		</script> <script src="main.4d2a1d78.js">
+		</script>
 
-		</script> </body></html>
+		
+	</body>
+</html>
