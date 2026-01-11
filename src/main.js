@@ -1,7 +1,6 @@
 import * as THREE from "three";
 
 import Stats from "stats-js";
-import { GUI } from "dat.gui";
 
 import { GPUComputationRenderer } from "./GPUComputationRenderer.js";
 
@@ -93,21 +92,7 @@ var positionUniforms;
 var velocityUniforms;
 var colorUniforms;
 var birdUniforms;
-var micc = false;
 var calibrationCountdown = 1000;
-var BoidBeat = function () {
-  this.speed = 1;
-  this.directions = 6;
-  this.turning = true;
-  this.lineWidth = 1;
-  this.song = window.location.hash.slice(1)
-    ? "/#" + window.location.hash.slice(1)
-    : "/#300%20Violin%20Orchestra";
-  this.activateMic = startMicD;
-  this.tThreshold = 0.3;
-  this.calibrate = () => (calibrationCountdown = 1000);
-  // Define render logic ...
-};
 var freqCount = 256;
 function getRMS(spectrum) {
   var rms = 0;
@@ -154,13 +139,20 @@ function Microphone(_fft) {
     navigator.mediaDevices
       .getUserMedia({ audio: true })
       .then(function (stream) {
+        // Hide the microphone message
+        var micMessage = document.getElementById("mic-message");
+        if (micMessage) {
+          micMessage.classList.add("hidden");
+        }
         processSound(stream, context);
       })
       .catch(function (err) {
         console.error("Microphone access denied:", err);
-        alert(
-          "Microphone access was denied. Please allow microphone access to use this feature.",
-        );
+        var micMessage = document.getElementById("mic-message");
+        if (micMessage) {
+          micMessage.textContent =
+            "Microphone access denied. Please refresh and allow access.";
+        }
       });
   }
 
@@ -190,48 +182,6 @@ function Microphone(_fft) {
   }
 }
 window.Microphone = Microphone;
-var audio = document.querySelector("audio");
-function songchange(value) {
-  window.location.hash = value.split("#").pop();
-}
-function hashchange() {
-  audio.src =
-    "https://cdn.glitch.com/7c659aa6-fe5f-4610-bdf3-3fd76117d9a5%2F" +
-    window.location.hash.slice(1) +
-    ".mp3";
-  audio.classList.add("paused");
-}
-var controls = new BoidBeat();
-window.onload = function () {
-  var gui = new GUI();
-  gui
-    .add(controls, "song", {
-      "Glorious Morning": "/#Glorious_morning",
-      Jumper: "/#Jumper",
-      Stride: "/#Stride-",
-      "300 Violin Orchestra": "/#300%20Violin%20Orchestra",
-      "ThunderZone v2": "/#638150_-ThunderZone-v2-",
-      "Portugal The Man - Feel it Still":
-        "/#Portugal.%20The%20Man%20-%20Feel%20It%20Still",
-      "The XX - Intro": "/#00%20Intro",
-      "Hall of the Mountain King": "/#Hall%20of%20the%20Mountain%20King",
-      'Everybody Wants To Rule The World (7" Version)':
-        "/#Everybody%20Wants%20To%20Rule%20The%20World%20(7%20Version)",
-      Flight: "/#Flight",
-      "Electroman Adventures V2":
-        "/#Waterflame%20-%20Electroman%20Adventures%20V2",
-      Rasputin: "/#Rasputin",
-    })
-    .onChange(songchange);
-  // gui.add(controls, 'speed', 0.125, 2);
-  // gui.add(controls, 'lineWidth', 1, 10);
-  // gui.add(controls, 'tThreshold', 0.01, 0.99);
-
-  // gui.add(controls, 'directions', 2, 12);
-  // gui.add(controls, 'turning');
-  gui.add(controls, "activateMic").name("useMicrophone");
-  // gui.add(controls, 'calibrate');
-};
 
 var effectiveF = 16;
 var trailSteps = 20;
@@ -245,17 +195,7 @@ function logNt(v) {
   );
 }
 
-if (window.location.hash) hashchange();
-window.addEventListener("hashchange", hashchange);
 var Mic;
-var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-var analyser = audioCtx.createAnalyser();
-analyser.connect(audioCtx.destination);
-
-analyser.fftSize = freqCount * 2;
-analyser.smoothingTimeConstant = 0.2;
-const source = audioCtx.createMediaElementSource(audio);
-source.connect(analyser);
 var bpm = 240;
 
 var hM = 100;
@@ -277,12 +217,8 @@ let music = new Uint8Array(freqCount).fill(0);
 function main() {
   calibrationCountdown -= 1000 / 60;
   ll++;
-  if (micc) {
-    if (Mic.spectrum.length === freqCount) {
-      music = Mic.spectrum.slice();
-    }
-  } else {
-    analyser.getByteFrequencyData(music);
+  if (Mic && Mic.spectrum.length === freqCount) {
+    music = Mic.spectrum.slice();
   }
   for (var i = 0; i < 0; i++) {
     music = music.map((x, i) => {
@@ -314,20 +250,10 @@ function main() {
   }
 }
 
-audio.addEventListener("pause", () => {
-  audio.classList.add("paused");
-});
-audio.addEventListener("play", () => {
-  audioCtx.resume();
-  audio.classList.remove("paused");
-});
-function startMicD() {
-  micc = true;
-  if (!Mic) {
-    Mic = new Microphone(freqCount * 2);
-    Mic.init();
-  }
-}
+// Auto-initialize microphone
+Mic = new Microphone(freqCount * 2);
+Mic.init();
+
 init();
 animate();
 
